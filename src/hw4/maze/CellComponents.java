@@ -4,7 +4,7 @@ package hw4.maze;
 public enum CellComponents {
 	
 	WALL, //the outer edge of the grid
-	APERTURE, //an open path through the grid
+	APERTURE, //an open path through the grid. each cell must at least have one aperture.
 	EXIT //the left most cell in the grid on left component only
 
 }
