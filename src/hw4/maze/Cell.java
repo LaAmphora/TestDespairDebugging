@@ -7,7 +7,7 @@ public class Cell {
 	private CellComponents right;
 	private CellComponents left;
 	
-	public Cell(CellComponents up, CellComponents down, CellComponents right, CellComponents left) {
+	public Cell(CellComponents left, CellComponents right, CellComponents up, CellComponents down) {
 		
 		if (up != null) { //if the provided component is not null, then set it as is.
 			this.up = up;
@@ -22,10 +22,14 @@ public class Cell {
 		}
 		
 		if (right != null) {
+			this.right = right;
+		} else {
 			this.right = CellComponents.WALL;
 		}
 		
 		if (left != null) {
+			this.left = left;
+		} else {
 			this.left = CellComponents.WALL;
 		}
 		
@@ -36,7 +40,11 @@ public class Cell {
 	}
 
 	public void setUp(CellComponents up) {
-		this.up = up;
+		if (up != null) { //need to set to edge (WALL) if we are setting the up component to be null
+			this.up = up;
+		} else {
+			this.up = CellComponents.WALL;
+		}
 	}
 
 	public CellComponents getDown() {
@@ -44,7 +52,11 @@ public class Cell {
 	}
 
 	public void setDown(CellComponents down) {
-		this.down = down;
+		if (down != null) { //need to set to edge (WALL) if we are setting the down component to be null
+			this.down = down;
+		} else {
+			this.down = CellComponents.WALL;
+		}
 	}
 
 	public CellComponents getRight() {
@@ -52,7 +64,11 @@ public class Cell {
 	}
 
 	public void setRight(CellComponents right) {
-		this.right = right;
+		if (right != null) { //need to set to edge (WALL) if we are setting the right component to be null
+			this.right = right;
+		} else {
+			this.right = CellComponents.WALL;
+		}
 	}
 
 	public CellComponents getLeft() {
@@ -60,7 +76,11 @@ public class Cell {
 	}
 
 	public void setLeft(CellComponents left) {
-		this.left = left;
+		if (left != null) { //need to set to edge (WALL) if we are setting the left component to be null
+			this.left = left;
+		} else {
+			this.left = CellComponents.WALL;
+		}
 	}
 
 	@Override
