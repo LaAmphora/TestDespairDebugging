@@ -63,4 +63,10 @@ public class Cell {
 		this.left = left;
 	}
 
+	@Override
+	public String toString() {
+	    return "Cell [left=" + left + ", right=" + right + ", up=" + up + ", down=" + down + "]";
+	}
+
+
 }
