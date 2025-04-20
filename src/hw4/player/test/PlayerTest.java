@@ -15,6 +15,7 @@ import hw4.maze.Row;
 import hw4.maze.test.Cell;
 import hw4.maze.test.CellComponents;
 import hw4.player.Player;
+import hw4.maze.*;
 
 class PlayerTest {
 	

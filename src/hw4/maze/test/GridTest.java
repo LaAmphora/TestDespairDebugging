@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import hw4.maze.*;
 import hw4.maze.Grid;
 import hw4.maze.Row;
 
