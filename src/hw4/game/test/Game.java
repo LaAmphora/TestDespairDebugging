@@ -11,6 +11,7 @@ import hw4.player.test.Player;
 public class Game {
 
 	Grid grid;
+	static int count = 0;
 
 	public Game(Grid grid) {
 		this.grid = grid;
@@ -47,8 +48,8 @@ public class Game {
 		if (index - 1 >= 0) { //checking that if we decrease a cell (move left) that we are within bounds 
 			return player.getCurrentRow().getCells().get(index - 1);
 		}
-		return currentCell; //return the same cell if we can't move? I think
 		
+		return currentCell; //return the same cell if we can't move? I think	
 	}
 	
 	Row moveRow(Player player, Movement movement)
@@ -86,32 +87,73 @@ public class Game {
 			return false;
 		}
 		
-		if(movement.equals(Movement.RIGHT) && player.getCurrentCell().getRight().equals(CellComponents.APERTURE))
+		int row_index = 0;
+		int cell_index = 0;
+		
+		for(int i = 0; i < grid.getRows().size(); i++)
 		{
+			if(grid.getRows().get(i).equals(player.getCurrentRow()))
+			{
+				row_index = i;
+			}
+		}
+		
+		for(int i = 0; i < player.getCurrentRow().getCells().size(); i++)
+		{
+			if(player.getCurrentRow().getCells().get(i).equals(player.getCurrentCell()))
+			{
+				cell_index = i;
+			}
+		}
+		
+		if(movement == Movement.RIGHT && player.getCurrentCell().getRight().equals(CellComponents.APERTURE))
+		{
+//			System.out.println("Right");
+			count++;
 			Cell newCell = moveCell(player, movement);
+			System.out.println("Right: " + newCell);
 			player.setCurrentCell(newCell);
+			player.setCurrentRow(grid.getRows().get(row_index));
+			System.out.println("count: " + count);
 			return true;
 		}
 		
-		if(movement.equals(Movement.LEFT) && player.getCurrentCell().getLeft().equals(CellComponents.APERTURE))
-		{
-			Cell newCell = moveCell(player, movement);
-			player.setCurrentCell(newCell);
-			return true;
-		}
+		// 
 		
-		if(movement.equals(Movement.UP) && player.getCurrentCell().getUp().equals(CellComponents.APERTURE))
+		if(movement == Movement.LEFT && player.getCurrentCell().getLeft().equals(CellComponents.APERTURE))
 		{
+//			System.out.println("Left");
+			count++;
+			Cell newCell = moveCell(player, movement);
+			System.out.println("Left: " + newCell);
+			player.setCurrentCell(newCell);
+			player.setCurrentRow(grid.getRows().get(row_index));
+			System.out.println("count: " + count);
+			return true;
+		}
+		//
+		if(movement == Movement.UP && player.getCurrentCell().getUp().equals(CellComponents.APERTURE))
+		{
+//			System.out.println("Up");
+			count++;
 			Row newRow = moveRow(player, movement);
+			
 			player.setCurrentRow(newRow);
+			System.out.println("Up: " + player.getCurrentRow());
+			player.setCurrentCell(newRow.getCells().get(cell_index));
+			System.out.println("count: " + count);
 			return true;
 		}
 			
-			
-		if(movement.equals(Movement.DOWN) && player.getCurrentCell().getDown().equals(CellComponents.APERTURE))
+			// 
+		if(movement == Movement.DOWN && player.getCurrentCell().getDown().equals(CellComponents.APERTURE))
 		{
+			count++;
 			Row newRow = moveRow(player, movement);
+			System.out.println("Down: " + newRow);
 			player.setCurrentRow(newRow);
+			player.setCurrentCell(newRow.getCells().get(cell_index));
+			System.out.println("count: " + count);
 			return true;
 		}
 		

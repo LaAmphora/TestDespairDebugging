@@ -23,5 +23,23 @@ public class Row {
 	public String toString() {
 		return "Row [cells=" + cells + "]";
 	}
+	
+	@Override
+	public boolean equals(Object a) {
+		
+		List<Cell> a_cells = ((Row) a).getCells();
+		boolean flag = true;
+		
+		for(int i = 0; i < cells.size(); i++)
+		{
+			if(!a_cells.get(i).equals(this.cells.get(i)))
+			{
+				flag = false;
+			}		
+		}
+		
+		return flag;
+		
+	}
 
 }
