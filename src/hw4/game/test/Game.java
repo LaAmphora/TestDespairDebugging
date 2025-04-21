@@ -39,10 +39,16 @@ public class Game {
 		
 		if(movement.equals(Movement.RIGHT))
 		{
-			return player.getCurrentRow().getCells().get(index + 1);
+			if (index + 1 < player.getCurrentRow().getCells().size()) { //need to check that the index + 1 is valid (index is not > than the # of cells in the row)
+				return player.getCurrentRow().getCells().get(index + 1);
+			}
 		}
 		
-		return player.getCurrentRow().getCells().get(index - 1);
+		if (index - 1 >= 0) { //checking that if we decrease a cell (move left) that we are within bounds 
+			return player.getCurrentRow().getCells().get(index - 1);
+		}
+		return currentCell; //return the same cell if we can't move? I think
+		
 	}
 	
 	Row moveRow(Player player, Movement movement)
@@ -60,10 +66,17 @@ public class Game {
 		
 		if(movement.equals(Movement.UP))
 		{
-			return grid.getRows().get(index + 1);
+			if (index + 1 < grid.getRows().size()) { //same boundary checks as in moveCell...
+				return grid.getRows().get(index + 1);
+			}
+			
 		}
 		
-		return grid.getRows().get(index - 1);
+		if (index - 1 >= 0) {
+			return grid.getRows().get(index - 1);
+		}
+		
+		return currentRow;
 	}
 	
 	boolean play(Movement movement, Player player) {
