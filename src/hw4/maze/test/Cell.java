@@ -89,19 +89,5 @@ public class Cell {
 	public String toString() {
 	    return "Cell [left=" + left + ", right=" + right + ", up=" + up + ", down=" + down + "]";
 	}
-	
-	@Override
-	public boolean equals(Object a) {
-		
-		Cell a_cells = (Cell) a;
-		if (a_cells.hashCode() == this.hashCode() ) {
-			return true;
-		} else {
-			return false;
-		}
-		
-	}
-
-
 
 }
