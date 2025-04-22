@@ -1,21 +1,21 @@
 package hw4.maze.test;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Row {
 	
 	//list to hold the cells in each row
-	private List<Cell> cells;
+	private ArrayList<Cell> cells;
 
-	public Row(List<Cell> cells) {
+	public Row(ArrayList<Cell> cells) {
 		this.cells = cells;
 	}
 
-	public List<Cell> getCells() {
+	public ArrayList<Cell> getCells() {
 		return cells;
 	}
 
-	public void setCells(List<Cell> cells) {
+	public void setCells(ArrayList<Cell> cells) {
 		this.cells = cells;
 	}
 

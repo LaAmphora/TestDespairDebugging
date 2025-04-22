@@ -209,46 +209,52 @@ public class Game {
 		return CellComponents.WALL;
 	}
 	
-//	public Grid createRandomGrid(int gridSize) {
-//		List<Cell> cells = new ArrayList<>();
-//		
-//		Random randExit = new Random();
-//		Random randAperture = new Random();
+	public Grid createRandomGrid(int gridSize) {
 		
-//		for(int i = 0; i < (gridSize*gridSize); i++)
-//		{
-//			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), randomCellComponent());
-//			
-//			if(newCell.getRight() == CellComponents.WALL &&
-//					newCell.getLeft() == CellComponents.WALL &&
-//					newCell.getDown() == CellComponents.WALL &&
-//					newCell.getUp() == CellComponents.WALL )
-//			{
-//				int open = randAperture.nextInt(4);
-//				
-//				if(open == 0)
-//				{
-//					newCell.setRight(CellComponents.APERTURE);
-//				}
-//				
-//				if(open == 1)
-//				{
-//					newCell.setLeft(CellComponents.APERTURE);
-//				}
-//				
-//				if(open == 2)
-//				{
-//					newCell.setDown(CellComponents.APERTURE);
-//				}
-//				
-//				if(open == 3)
-//				{
-//					newCell.setUp(CellComponents.APERTURE);
-//				}
-//			}
-//			
-//			cells.add(newCell);
-//		}
+		if(gridSize < 3 || gridSize > 7)
+		{
+			return null;
+		}
+		
+		List<Cell> cells = new ArrayList<>();
+		
+		Random randExit = new Random();
+		Random randAperture = new Random();
+		
+		for(int i = 0; i < (gridSize*gridSize); i++)
+		{
+			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), randomCellComponent());
+			
+			if(newCell.getRight() == CellComponents.WALL &&
+					newCell.getLeft() == CellComponents.WALL &&
+					newCell.getDown() == CellComponents.WALL &&
+					newCell.getUp() == CellComponents.WALL )
+			{
+				int open = randAperture.nextInt(4);
+				
+				if(open == 0)
+				{
+					newCell.setRight(CellComponents.APERTURE);
+				}
+				
+				if(open == 1)
+				{
+					newCell.setLeft(CellComponents.APERTURE);
+				}
+				
+				if(open == 2)
+				{
+					newCell.setDown(CellComponents.APERTURE);
+				}
+				
+				if(open == 3)
+				{
+					newCell.setUp(CellComponents.APERTURE);
+				}
+			}
+			
+			cells.add(newCell);
+		}
 		
 //		PRINT OUT ALL OF THE CELLS
 //		for(int i = 0; i < cells.size(); i++)
@@ -257,39 +263,63 @@ public class Game {
 //			System.out.println("Cells Size: " + cells.size());
 //		}
 		
-//		List<Row> rows = new ArrayList<>();
-//		int exit = randExit.nextInt(gridSize);
-//		
-//		for(int i = 0; i < gridSize; i++)
-//		{
-//			Row row = new Row(new ArrayList<>());
-//			List<Cell> rowCells = new ArrayList<>();
-//			
-//			for(int j = 0; j < gridSize; j++)
-//			{
-//				Cell addCell = cells.get(i + j);
-//				
-//				if(i == exit && j == 0)
+		List<Row> rows = new ArrayList<>();
+		int exit = randExit.nextInt(gridSize);
+		
+		for(int i = 0; i < gridSize; i++)
+		{
+			Row row = new Row(new ArrayList<>());
+			List<Cell> rowCells = new ArrayList<>();
+			
+			for(int j = 0; j < gridSize; j++)
+			{
+				Cell addCell = cells.get(i + j);
+				
+//				if(j > 0)
 //				{
-//					addCell.setLeft(CellComponents.EXIT);
+//					Cell compareLeftRight = cells.get(i + j - 1);
+//					
+//					if(compareLeftRight.getRight() != addCell.getLeft())
+//					{
+//						System.out.println("compare: " + compareLeftRight + "orig: " + addCell);
+//						addCell.setLeft(compareLeftRight.getRight());
+//						System.out.println("new: " + addCell);
+//					}
 //				}
-//				
-//				rowCells.add(addCell);
-//			}
-//			
-//			row.setCells(rowCells);
-//			rows.add(row);
-//		}
-//		
+				
+				if(i > 0)
+				{
+					Cell compareUpDown = cells.get(i + j - gridSize);
+					
+					if(compareUpDown.getDown() != addCell.getUp())
+					{
+						System.out.println("compare up/down: " + compareUpDown + "orig: " + addCell);
+						addCell.setUp(compareUpDown.getDown());
+						System.out.println("new: " + addCell);
+					}
+				}
+				
+				if(i == exit && j == 0)
+				{
+					addCell.setLeft(CellComponents.EXIT);
+				}
+				
+				rowCells.add(addCell);
+			}
+			
+			row.setCells(rowCells);
+			rows.add(row);
+		}
+		
 //		for(int i = 0; i < gridSize; i++)
 //		{
 //			System.out.println(rows.get(i));
 //		}
-//		
-//		Grid randomGrid = new Grid(rows);
-//		return randomGrid;
-//		
-//	}
+		
+		Grid randomGrid = new Grid(rows);
+		return randomGrid;
+		
+	}
 
 	@Override
 	public String toString() {

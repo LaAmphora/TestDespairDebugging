@@ -1,21 +1,21 @@
 package hw4.maze.test;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Grid {
 	
-	private List<Row> rows; //list to hold each row within a grid
+	private ArrayList<Row> rows; //list to hold each row within a grid
 
-	public Grid(List<Row> rows) {
+	public Grid(ArrayList<Row> rows) {
 		super();
 		this.rows = rows;
 	}
 
-	public List<Row> getRows() {
+	public ArrayList<Row> getRows() {
 		return rows;
 	}
 
-	public void setRows(List<Row> rows) {
+	public void setRows(ArrayList<Row> rows) {
 		this.rows = rows;
 	}
 

@@ -1,7 +1,5 @@
 package hw4.maze.test;
 
-import java.util.List;
-
 public class Cell {
 	
 	private CellComponents up;
