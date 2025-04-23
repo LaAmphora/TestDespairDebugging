@@ -37,10 +37,16 @@ public class Game {
 		this.grid = createRandomGrid(gridSize);
 	}
 
+	/**
+	 * Gets the grid of the game.
+	 * */
 	public Grid getGrid() {
 		return grid;
 	}
 
+	/**
+	 * Sets the grid for the game.
+	 * */
 	public void setGrid(Grid grid) {
 		this.grid = grid;
 	}
@@ -311,13 +317,21 @@ public class Game {
 		
 	}
 	
+	/**
+	 * Visualizes the current status of the game.
+	 * @param player
+	 *    This argument represents the player of the game.
+	 * */
 	public void visualize(Player player) {
 		
+		// Warns the user of a visualization
 		System.out.println("Current Position: ");
 		
-		int x = 0, y = 0;
-		int w = 0, z = 0;
+		int x = 0, y = 0; // Coordinates of the current cell of the player
+		int w = 0, z = 0; // Coordinates of the exit cell of the player
 		
+		// Finds the matching cell coordinates
+		// for the coordinates listed above
 		for(int i = 0; i < gridSize; i++)
 		{
 			for(int j = 0; j < gridSize; j++)
@@ -336,25 +350,32 @@ public class Game {
 			}
 		}
 		
+		// Print out the current status of agent
+		// row by row
 		for(int i = 0; i < gridSize; i++)
 		{
+			// Start with empty string
 			String base = "";
 			for(int j = 0; j < gridSize; j++)
 			{
+				// If current position cell print 'A'
 				if(i == x && j == y)
 				{
 					base = base + "\tA";
 					continue;
 				}
 				
+				// If exit cell print 'E'
 				if(i == w && j == z)
 				{
 					base = base + "\tE";
 					continue;
 				}
 				
+				// Otherwise print 'S'
 				base = base + "\tS";
 			}
+			// Print string of row
 			System.out.println(base);
 		}
 		
@@ -362,6 +383,9 @@ public class Game {
 	}
 
 	@Override
+	/**
+	 * Prints out the grid information of the game.
+	 * */
 	public String toString() {
 		return "Game [grid=" + grid + "]";
 	}
