@@ -51,11 +51,20 @@ public class Game {
 		this.grid = grid;
 	}
 	
+	/**
+	 * Attempts to move the cell of a player
+	 * @param player
+	 *    This argument represents the player of a game.
+	 * @param movement
+	 *    This argument represents the move the player is trying to make.
+	 * */
 	public Cell moveCell(Player player, Movement movement)
 	{
+		// Get players current cell
 		Cell currentCell = player.getCurrentCell();
 		int index = 0;
 		
+		// Get the index of the current cell
 		for(int i = 0; i < player.getCurrentRow().getCells().size(); i++)
 		{
 			if(player.getCurrentRow().getCells().get(i).equals(currentCell))
@@ -64,6 +73,7 @@ public class Game {
 			}
 		}
 		
+		// Move to the right / change cell, if right movement allowed
 		if(movement.equals(Movement.RIGHT) && currentCell.getRight().equals(CellComponents.APERTURE))
 		{
 			if (index + 1 < player.getCurrentRow().getCells().size()) { //need to check that the index + 1 is valid (index is not > than the # of cells in the row)
@@ -71,22 +81,32 @@ public class Game {
 			}
 		}
 		
+		// Move to the left / change cell, if left movement allowed
 		else if (movement.equals(Movement.LEFT) && currentCell.getLeft().equals(CellComponents.APERTURE)) { //checking that if we decrease a cell (move left) that we are within bounds 
             if (index - 1 >= 0) { 
     			return player.getCurrentRow().getCells().get(index - 1);
             }
 		}
 		System.out.println("Move not possible");
-		return currentCell; //return the same cell if we can't move? I think
+		return currentCell; //return the same cell if we can't move
 		
 	}
 	
+	/**
+	 * Attempts to move the row of the player.
+	 * @param player
+	 *    This argument represents the player of the game.
+	 * @param movement
+	 *    This argument represents the move the player is trying to make.
+	 * */
 	public Row moveRow(Player player, Movement movement)
 	{
+		// Get the current row and cell of the player
 		Row currentRow = player.getCurrentRow();
 		Cell currentCell = player.getCurrentCell();
 		int index = 0;
 		
+		// Find the index of the current cell of the player
 		for(int i = 0; i < grid.getRows().size(); i++)
 		{
 			if(grid.getRows().get(i).equals(currentRow))
@@ -95,6 +115,7 @@ public class Game {
 			}
 		}
 		
+		// Move up a row / change row if movement is allowed
 		if(movement.equals(Movement.UP) && currentCell.getUp().equals(CellComponents.APERTURE))
 		{
             System.out.println("Trying to move up");
@@ -103,7 +124,7 @@ public class Game {
 			}
 			
 		}
-		
+		// Move down a row / change row if movement is allowed
 		else if (movement.equals(Movement.DOWN) && currentCell.getUp().equals(CellComponents.APERTURE)) {
 			
 			System.out.println("Trying to move down");
@@ -112,16 +133,25 @@ public class Game {
 			}
 		}
 		System.out.println("Move not possible");
-		return currentRow;
+		return currentRow; // or return the current row
 	}
 	
+	/**
+	 * This function is how the player can move through the grid.
+	 * @param player
+	 *    This argument represents the player playing the game.
+	 * @param movement
+	 *    This argument represents the movement the user is trying to make.
+	 * */
 	public boolean play(Movement movement, Player player) {
 		
+		// If either movement or player null we cannot play
 		if(movement == null || player == null)
 		{
 			return false;
 		}
 		
+		// Attempt to move right
 		if(movement.equals(Movement.RIGHT))
 		{
 			Cell prevCell = player.getCurrentCell(); //getting the cell before it gets changed
@@ -133,6 +163,7 @@ public class Game {
 			return true;
 		}
 		
+		// Attempt to move left
 		if(movement.equals(Movement.LEFT))
 		{
 			Cell prevCell = player.getCurrentCell();
@@ -149,6 +180,7 @@ public class Game {
 			return true;
 		}
 		
+		// Attempt to move up
 		if(movement.equals(Movement.UP))
 		{
 			int cellIndex = player.getCurrentRow().getCells().indexOf(player.getCurrentCell());
@@ -168,7 +200,7 @@ public class Game {
 			return true;
 		}
 			
-			
+		// Attempt to move down
 		if(movement.equals(Movement.DOWN))
 		{
 			int cellIndex = player.getCurrentRow().getCells().indexOf(player.getCurrentCell());
@@ -212,27 +244,39 @@ public class Game {
 		return CellComponents.WALL;
 	}
 	
+	/**
+	 * Creates a random grid to the users liking.
+	 * @param gridSize
+	 *    This argument represents the width and the length of the grid.
+	 * */
 	public Grid createRandomGrid(int gridSize) {
 		
+		// Grid must stay within these bounds
 		if(gridSize < 3 || gridSize > 7)
 		{
 			return null;
 		}
 		
+		///INITIALLIZING VARIABLEES////////
 		ArrayList<Cell> cells = new ArrayList<>();
 		
 		Random randExit = new Random();
 		Random randAperture = new Random();
+		///////////////////////////////////
 		
+		// Create n x n cells
 		for(int i = 0; i < (gridSize*gridSize); i++)
 		{
+			// All cells but the left component will have random component enumeration (only WALL or APERTURE)
 			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), CellComponents.WALL);
 			
+			// If all cell components are WALL then randomly change one to APERTURE
 			if(newCell.getRight() == CellComponents.WALL &&
 					newCell.getLeft() == CellComponents.WALL &&
 					newCell.getDown() == CellComponents.WALL &&
 					newCell.getUp() == CellComponents.WALL )
 			{
+				// Represents the component to change to APERTURE
 				int open = randAperture.nextInt(4);
 				
 				if(open == 0)
@@ -256,11 +300,14 @@ public class Game {
 				}
 			}
 			
+			// Add cells to the cell list
 			cells.add(newCell);
 		}
 		
+		// Initialize a list
 		ArrayList<Row> rows = new ArrayList<>();
 		
+		// Add the cells to rows in order
 		for(int i = 0; i < gridSize; i++)
 		{
 			Row row = new Row(new ArrayList<>());
@@ -268,9 +315,12 @@ public class Game {
 			
 			for(int j = 0; j < gridSize; j++)
 			{
+				// Add cells to the rows
 				Cell addCell = cells.get((i * gridSize) + j);
 				
 				if(j == 0) {
+					// If the cell is the leftmost cell
+					// then set the left component to WALL
 					addCell.setLeft(CellComponents.WALL);
 				}
 				
@@ -282,8 +332,11 @@ public class Game {
 			
 		}
 		
+		// Add the rows to the new grid
 		Grid randomGrid = new Grid(rows);
 		
+		// If left and right cells don't share the same enumeration
+		// get a random enumeration and set them to the same enumeration
 		for(int i=0; i<randomGrid.getRows().size(); i++) {
 			for(int j=0; j< gridSize - 1; j++) {
 				if(!randomGrid.getRows().get(i).getCells().get(j).getRight().equals(randomGrid.getRows().get(i).getCells().get(j + 1).getLeft())) {
@@ -295,6 +348,8 @@ public class Game {
 			}
 		}
 		
+		// If up and down cells don't share the same enumeration
+		// get a random enumeration and set them to the same enumeration
 		for(int i=0; i<randomGrid.getRows().size(); i++) {
 			for(int j = 0; j < gridSize - 1; j++)
 			{
@@ -307,18 +362,12 @@ public class Game {
 			}
 		}
 		
+		// Pick a random row to set the leftmost cell left component to EXIT
 		int exit = randExit.nextInt(gridSize);
 		randomGrid.getRows().get(exit).getCells().get(0).setLeft(CellComponents.EXIT);
 		
-		System.out.println("New Game");
-
-		for(int i = 0; i < gridSize; i++)
-		{
-			System.out.println(randomGrid.getRows().get(i));
-		}
-		
-		return randomGrid;
-		
+		// Return the newly generated grid
+		return randomGrid;	
 	}
 	
 	/**
