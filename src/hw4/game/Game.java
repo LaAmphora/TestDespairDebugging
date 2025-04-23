@@ -1,13 +1,13 @@
-package hw4.game.test;
+package hw4.game;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import hw4.maze.test.Cell;
 import hw4.maze.test.CellComponents;
 import hw4.maze.test.Grid;
 import hw4.maze.test.Row;
+import hw4.player.Movement;
 import hw4.player.test.Player;
 
 public class Game {
@@ -15,10 +15,22 @@ public class Game {
 	Grid grid;
 	int gridSize = 0;
 
+	/**
+	 * Parameterized constructor using a given grid.
+	 * @param grid
+	 *    This argument represents the grid which will be used to play the game.
+	 * */
 	public Game(Grid grid) {
 		this.grid = grid;
+		this.gridSize = grid.getRows().size();	
 	}
 	
+	/**
+	 * Parameterized constructor using an integer to generate a random
+	 * grid with the same width and length.
+	 * @param gridSize
+	 *    This argument represents the size of both the length and width of the grid.
+	 * */
 	public Game(int gridSize)
 	{
 		this.gridSize = gridSize;
@@ -38,30 +50,23 @@ public class Game {
 		Cell currentCell = player.getCurrentCell();
 		int index = 0;
 		
-//        System.out.println("Moving cell: Current cell = " + currentCell);
-		
 		for(int i = 0; i < player.getCurrentRow().getCells().size(); i++)
 		{
 			if(player.getCurrentRow().getCells().get(i).equals(currentCell))
 			{
 				index = i;
-//                System.out.println("Current cell found at index: " + index);
 			}
 		}
 		
 		if(movement.equals(Movement.RIGHT) && currentCell.getRight().equals(CellComponents.APERTURE))
 		{
-//            System.out.println("Trying to move right");
 			if (index + 1 < player.getCurrentRow().getCells().size()) { //need to check that the index + 1 is valid (index is not > than the # of cells in the row)
-//                System.out.println("Valid move to the right");
 				return player.getCurrentRow().getCells().get(index + 1);
 			}
 		}
 		
 		else if (movement.equals(Movement.LEFT) && currentCell.getLeft().equals(CellComponents.APERTURE)) { //checking that if we decrease a cell (move left) that we are within bounds 
-//            System.out.println("Trying to move left");
             if (index - 1 >= 0) { 
-//                System.out.println("Valid move to the left");
     			return player.getCurrentRow().getCells().get(index - 1);
             }
 		}
@@ -76,14 +81,11 @@ public class Game {
 		Cell currentCell = player.getCurrentCell();
 		int index = 0;
 		
-//        System.out.println("Moving row: Current row = " + currentRow);
-		
 		for(int i = 0; i < grid.getRows().size(); i++)
 		{
 			if(grid.getRows().get(i).equals(currentRow))
 			{
 				index = i;
-//                System.out.println("Current row found at index: " + index);
 			}
 		}
 		
@@ -91,7 +93,6 @@ public class Game {
 		{
             System.out.println("Trying to move up");
 			if (index - 1 >= 0) { //same boundary checks as in moveCell... EXCEPT when we are moving up a row, we are decrementing the index!!!
-//                System.out.println("Valid move up to row " + (index - 1));
 				return grid.getRows().get(index - 1);
 			}
 			
@@ -101,7 +102,6 @@ public class Game {
 			
 			System.out.println("Trying to move down");
 			if (index + 1 < grid.getRows().size()) { //if we move down we are increasing the index!!!
-//				System.out.println("Valid move down to row " + (index + 1));
 				return grid.getRows().get(index + 1);
 			}
 		}
@@ -109,7 +109,7 @@ public class Game {
 		return currentRow;
 	}
 	
-	boolean play(Movement movement, Player player) {
+	public boolean play(Movement movement, Player player) {
 		
 		if(movement == null || player == null)
 		{
@@ -118,7 +118,6 @@ public class Game {
 		
 		if(movement.equals(Movement.RIGHT))
 		{
-//			System.out.println("Moving right");
 			Cell prevCell = player.getCurrentCell(); //getting the cell before it gets changed
 			Cell newCell = moveCell(player, movement);
 			player.setCurrentCell(newCell);
@@ -130,13 +129,11 @@ public class Game {
 		
 		if(movement.equals(Movement.LEFT))
 		{
-//			System.out.println("Moving left");
 			Cell prevCell = player.getCurrentCell();
 			Cell newCell = moveCell(player, movement);
 			player.setCurrentCell(newCell);
 			
 			if (prevCell.getLeft().equals(CellComponents.EXIT)) { //if we reach the exit when we are moving left then return true.
-//				System.out.println("But we found the exit! Exiting...");
 				return true;
 			}
 			
@@ -148,7 +145,6 @@ public class Game {
 		
 		if(movement.equals(Movement.UP))
 		{
-//			System.out.println("Moving up");
 			int cellIndex = player.getCurrentRow().getCells().indexOf(player.getCurrentCell());
 			
 			Row prevRow = player.getCurrentRow();
@@ -158,7 +154,6 @@ public class Game {
 			
 			if (cellIndex >= 0) {
 				player.setCurrentCell(newRow.getCells().get(cellIndex));
-//				System.out.println("Updated cell to column " + cellIndex + "in the new row");
 			}
 			if (prevRow == newRow) { //checking if the movement never happened then we return false
 				return false;
@@ -170,7 +165,6 @@ public class Game {
 			
 		if(movement.equals(Movement.DOWN))
 		{
-//			System.out.println("Moving down");
 			int cellIndex = player.getCurrentRow().getCells().indexOf(player.getCurrentCell());
 			
 			Row prevRow = player.getCurrentRow();
@@ -180,7 +174,6 @@ public class Game {
 			
 			if (cellIndex >= 0) {
 				player.setCurrentCell(newRow.getCells().get(cellIndex));
-//				System.out.println("Updated cell to column " + cellIndex + "in the new row");
 			}
 			if (prevRow == newRow) { //checking for unchanged movement then we return false
 				return false;
@@ -216,14 +209,14 @@ public class Game {
 			return null;
 		}
 		
-		List<Cell> cells = new ArrayList<>();
+		ArrayList<Cell> cells = new ArrayList<>();
 		
 		Random randExit = new Random();
 		Random randAperture = new Random();
 		
 		for(int i = 0; i < (gridSize*gridSize); i++)
 		{
-			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), randomCellComponent());
+			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), CellComponents.WALL);
 			
 			if(newCell.getRight() == CellComponents.WALL &&
 					newCell.getLeft() == CellComponents.WALL &&
@@ -256,68 +249,115 @@ public class Game {
 			cells.add(newCell);
 		}
 		
-//		PRINT OUT ALL OF THE CELLS
-//		for(int i = 0; i < cells.size(); i++)
-//		{
-//			System.out.println(cells.get(i));
-//			System.out.println("Cells Size: " + cells.size());
-//		}
-		
-		List<Row> rows = new ArrayList<>();
-		int exit = randExit.nextInt(gridSize);
+		ArrayList<Row> rows = new ArrayList<>();
 		
 		for(int i = 0; i < gridSize; i++)
 		{
 			Row row = new Row(new ArrayList<>());
-			List<Cell> rowCells = new ArrayList<>();
+			ArrayList<Cell> rowCells = new ArrayList<>();
 			
 			for(int j = 0; j < gridSize; j++)
 			{
-				Cell addCell = cells.get(i + j);
+				Cell addCell = cells.get((i * gridSize) + j);
 				
-//				if(j > 0)
-//				{
-//					Cell compareLeftRight = cells.get(i + j - 1);
-//					
-//					if(compareLeftRight.getRight() != addCell.getLeft())
-//					{
-//						System.out.println("compare: " + compareLeftRight + "orig: " + addCell);
-//						addCell.setLeft(compareLeftRight.getRight());
-//						System.out.println("new: " + addCell);
-//					}
-//				}
-				
-				if(i > 0)
-				{
-					Cell compareUpDown = cells.get(i + j - gridSize);
-					
-					if(compareUpDown.getDown() != addCell.getUp())
-					{
-						System.out.println("compare up/down: " + compareUpDown + "orig: " + addCell);
-						addCell.setUp(compareUpDown.getDown());
-						System.out.println("new: " + addCell);
-					}
+				if(j == 0) {
+					addCell.setLeft(CellComponents.WALL);
 				}
 				
-				if(i == exit && j == 0)
-				{
-					addCell.setLeft(CellComponents.EXIT);
-				}
-				
-				rowCells.add(addCell);
+				rowCells.add(addCell);		
 			}
 			
 			row.setCells(rowCells);
 			rows.add(row);
+			
 		}
 		
-//		for(int i = 0; i < gridSize; i++)
-//		{
-//			System.out.println(rows.get(i));
-//		}
-		
 		Grid randomGrid = new Grid(rows);
+		
+		for(int i=0; i<randomGrid.getRows().size(); i++) {
+			for(int j=0; j< gridSize - 1; j++) {
+				if(!randomGrid.getRows().get(i).getCells().get(j).getRight().equals(randomGrid.getRows().get(i).getCells().get(j + 1).getLeft())) {
+					CellComponents shareLeftRight = randomCellComponent();
+					
+					randomGrid.getRows().get(i).getCells().get(j).setRight(shareLeftRight);
+					randomGrid.getRows().get(i).getCells().get(j + 1).setLeft(shareLeftRight);
+				}		
+			}
+		}
+		
+		for(int i=0; i<randomGrid.getRows().size(); i++) {
+			for(int j = 0; j < gridSize - 1; j++)
+			{
+				if(!randomGrid.getRows().get(j).getCells().get(i).getDown().equals(randomGrid.getRows().get(j + 1).getCells().get(i).getUp())) {
+					CellComponents shareUpDown = randomCellComponent();
+					
+					randomGrid.getRows().get(j).getCells().get(i).setDown(shareUpDown);
+					randomGrid.getRows().get(j + 1).getCells().get(i).setUp(shareUpDown);
+				}
+			}
+		}
+		
+		int exit = randExit.nextInt(gridSize);
+		randomGrid.getRows().get(exit).getCells().get(0).setLeft(CellComponents.EXIT);
+		
+		System.out.println("New Game");
+
+		for(int i = 0; i < gridSize; i++)
+		{
+			System.out.println(randomGrid.getRows().get(i));
+		}
+		
 		return randomGrid;
+		
+	}
+	
+	public void visualize(Player player) {
+		
+		System.out.println("Current Position: ");
+		
+		int x = 0, y = 0;
+		int w = 0, z = 0;
+		
+		for(int i = 0; i < gridSize; i++)
+		{
+			for(int j = 0; j < gridSize; j++)
+			{
+				if(grid.getRows().get(i).getCells().get(j).equals(player.getCurrentCell()))
+				{
+					x = i;
+					y = j;
+				}
+				
+				if(grid.getRows().get(i).getCells().get(j).getLeft().equals(CellComponents.EXIT))
+				{
+					w = i;
+					z = j;
+				}
+			}
+		}
+		
+		for(int i = 0; i < gridSize; i++)
+		{
+			String base = "";
+			for(int j = 0; j < gridSize; j++)
+			{
+				if(i == x && j == y)
+				{
+					base = base + "\tA";
+					continue;
+				}
+				
+				if(i == w && j == z)
+				{
+					base = base + "\tE";
+					continue;
+				}
+				
+				base = base + "\tS";
+			}
+			System.out.println(base);
+		}
+		
 		
 	}
 
