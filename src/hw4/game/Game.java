@@ -160,6 +160,8 @@ public class Game {
 			if (prevCell == newCell) { //if the cell never changed and the movement was incorrect then we need to return false!!!
 				return false; 
 			}
+			
+			visualize(player);
 			return true;
 		}
 		
@@ -177,6 +179,7 @@ public class Game {
 			if (prevCell == newCell) { //if cell never changed then movement was incorrect so return false
 				return false;
 			}
+			visualize(player);
 			return true;
 		}
 		
@@ -196,7 +199,7 @@ public class Game {
 			if (prevRow == newRow) { //checking if the movement never happened then we return false
 				return false;
 			}
-			
+			visualize(player);
 			return true;
 		}
 			
@@ -216,7 +219,7 @@ public class Game {
 			if (prevRow == newRow) { //checking for unchanged movement then we return false
 				return false;
 			}
-			
+			visualize(player);
 			return true;
 		}
 		
