@@ -74,7 +74,7 @@ public class Game {
 		}
 		
 		// Move to the right / change cell, if right movement allowed
-		if(movement.equals(Movement.RIGHT) && currentCell.getRight().equals(CellComponents.APERTURE))
+		if(movement == Movement.RIGHT && currentCell.getRight().equals(CellComponents.APERTURE))
 		{
 			if (index + 1 < player.getCurrentRow().getCells().size()) { //need to check that the index + 1 is valid (index is not > than the # of cells in the row)
 				return player.getCurrentRow().getCells().get(index + 1);
@@ -82,7 +82,7 @@ public class Game {
 		}
 		
 		// Move to the left / change cell, if left movement allowed
-		else if (movement.equals(Movement.LEFT) && currentCell.getLeft().equals(CellComponents.APERTURE)) { //checking that if we decrease a cell (move left) that we are within bounds 
+		else if (movement == Movement.LEFT && currentCell.getLeft().equals(CellComponents.APERTURE)) { //checking that if we decrease a cell (move left) that we are within bounds 
             if (index - 1 >= 0) { 
     			return player.getCurrentRow().getCells().get(index - 1);
             }
@@ -116,7 +116,7 @@ public class Game {
 		}
 		
 		// Move up a row / change row if movement is allowed
-		if(movement.equals(Movement.UP) && currentCell.getUp().equals(CellComponents.APERTURE))
+		if(movement == Movement.UP && currentCell.getUp().equals(CellComponents.APERTURE))
 		{
             System.out.println("Trying to move up");
 			if (index - 1 >= 0) { //same boundary checks as in moveCell... EXCEPT when we are moving up a row, we are decrementing the index!!!
@@ -125,7 +125,7 @@ public class Game {
 			
 		}
 		// Move down a row / change row if movement is allowed
-		else if (movement.equals(Movement.DOWN) && currentCell.getUp().equals(CellComponents.APERTURE)) {
+		else if (movement == Movement.DOWN && currentCell.getUp().equals(CellComponents.APERTURE)) {
 			
 			System.out.println("Trying to move down");
 			if (index + 1 < grid.getRows().size()) { //if we move down we are increasing the index!!!
@@ -152,7 +152,7 @@ public class Game {
 		}
 		
 		// Attempt to move right
-		if(movement.equals(Movement.RIGHT))
+		if(movement == Movement.RIGHT)
 		{
 			Cell prevCell = player.getCurrentCell(); //getting the cell before it gets changed
 			Cell newCell = moveCell(player, movement);
@@ -168,7 +168,7 @@ public class Game {
 		}
 		
 		// Attempt to move left
-		if(movement.equals(Movement.LEFT))
+		if(movement == Movement.LEFT)
 		{
 			Cell prevCell = player.getCurrentCell();
 			Cell newCell = moveCell(player, movement);
@@ -189,7 +189,7 @@ public class Game {
 		}
 		
 		// Attempt to move up
-		if(movement.equals(Movement.UP))
+		if(movement == Movement.UP)
 		{
 			int cellIndex = player.getCurrentRow().getCells().indexOf(player.getCurrentCell());
 			
@@ -212,7 +212,7 @@ public class Game {
 		}
 			
 		// Attempt to move down
-		if(movement.equals(Movement.DOWN))
+		if(movement == Movement.DOWN)
 		{
 			int cellIndex = player.getCurrentRow().getCells().indexOf(player.getCurrentCell());
 			
