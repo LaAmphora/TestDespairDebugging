@@ -196,15 +196,19 @@ public class Game {
 	 * */
 	public CellComponents randomCellComponent() {
 		
+		// Instantiate random number
 		Random random = new Random();
 		
+		// Get random number
 		int randComponent = random.nextInt(100);
 		
+		// If divisible by two then APERTURE
 		if(randComponent % 2 == 0)
 		{
 			return CellComponents.APERTURE;
 		}	
 		
+		// Otherwise WALL
 		return CellComponents.WALL;
 	}
 	
