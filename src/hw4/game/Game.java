@@ -282,7 +282,7 @@ public class Game {
 		for(int i = 0; i < (gridSize*gridSize); i++)
 		{
 			// All cells but the left component will have random component enumeration (only WALL or APERTURE)
-			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), CellComponents.WALL);
+			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), randomCellComponent());
 			
 			// If all cell components are WALL then randomly change one to APERTURE
 			if(newCell.getRight() == CellComponents.WALL &&
@@ -293,22 +293,22 @@ public class Game {
 				// Represents the component to change to APERTURE
 				int open = randAperture.nextInt(4);
 				
-				if(open == 0)
+				if(open == 0 && i % gridSize != gridSize - 1)
 				{
 					newCell.setRight(CellComponents.APERTURE);
 				}
 				
-				if(open == 1)
+				else if(open == 1 && i % gridSize != 0)
 				{
 					newCell.setLeft(CellComponents.APERTURE);
 				}
 				
-				if(open == 2)
+				else if(open == 2 && i / gridSize != gridSize - 1)
 				{
 					newCell.setDown(CellComponents.APERTURE);
 				}
 				
-				if(open == 3)
+				else if(open == 3 && i / gridSize != 0)
 				{
 					newCell.setUp(CellComponents.APERTURE);
 				}
@@ -332,11 +332,23 @@ public class Game {
 				// Add cells to the rows
 				Cell addCell = cells.get((i * gridSize) + j);
 				
+				//if cell is rightmost cell set right component to wall
+				if(j == gridSize - 1) {
+					addCell.setRight(CellComponents.WALL);
+				}
+				
 				if(j == 0) {
 					// If the cell is the leftmost cell
 					// then set the left component to WALL
 					addCell.setLeft(CellComponents.WALL);
 				}
+				
+				if (i == 0) {
+	                addCell.setUp(CellComponents.WALL);
+	            }
+	            if (i == gridSize - 1) {
+	                addCell.setDown(CellComponents.WALL);
+	            }
 				
 				rowCells.add(addCell);		
 			}

@@ -3,6 +3,8 @@ package hw4.main;
 import java.util.Scanner;
 
 import hw4.game.Game;
+import hw4.maze.test.Cell;
+import hw4.maze.test.CellComponents;
 import hw4.player.Movement;
 import hw4.player.test.Player;
 
@@ -38,10 +40,31 @@ public class Main {
 				System.out.println("Movement was not valid");
 				continue;
 			}
+			Cell currCell = player.getCurrentCell();
+			System.out.println("Current cell components:");
+			System.out.print("Up: " + currCell.getUp()+ " ");
+			System.out.print("Down: " + currCell.getDown()+ " ");
+			System.out.print("Left: " + currCell.getLeft()+ " ");
+			System.out.print("Right: " + currCell.getRight()+ " ");
 			
 			boolean moved = game.play(move, player);
+			Cell currentCell = player.getCurrentCell();
+			System.out.println("Current cell after the move:");
+			System.out.print("Up: " + currentCell.getUp() + " ");
+			System.out.print("Down: " + currentCell.getDown() + " ");
+			System.out.print("Left: " + currentCell.getLeft()  + " ");
+			System.out.print("Right: " + currentCell.getRight() + " ");
+			
 			if (moved != true) {
 				System.out.println("You hit a wall or have an invalid move.");
+			}
+			else {
+			    //check if we hit the exit
+			    Cell currenttCell = player.getCurrentCell();
+			    if (currenttCell.getLeft() == CellComponents.EXIT) {
+			        System.out.println("You reached the exit! Ending game...");
+			        break; //exit the loop/game
+			    }
 			}
 			
 		}
