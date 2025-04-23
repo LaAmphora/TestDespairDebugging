@@ -161,7 +161,9 @@ public class Game {
 				return false; 
 			}
 			
+			//Show player current status
 			visualize(player);
+			
 			return true;
 		}
 		
@@ -179,7 +181,10 @@ public class Game {
 			if (prevCell == newCell) { //if cell never changed then movement was incorrect so return false
 				return false;
 			}
+			
+			//Show player current status
 			visualize(player);
+			
 			return true;
 		}
 		
@@ -199,7 +204,10 @@ public class Game {
 			if (prevRow == newRow) { //checking if the movement never happened then we return false
 				return false;
 			}
+			
+			//Show player current status
 			visualize(player);
+			
 			return true;
 		}
 			
@@ -219,7 +227,10 @@ public class Game {
 			if (prevRow == newRow) { //checking for unchanged movement then we return false
 				return false;
 			}
+			
+			//Show player current status
 			visualize(player);
+			
 			return true;
 		}
 		
