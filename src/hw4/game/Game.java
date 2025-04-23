@@ -87,6 +87,13 @@ public class Game {
     			return player.getCurrentRow().getCells().get(index - 1);
             }
 		}
+		
+		if(movement.equals(Movement.LEFT) && currentCell.getLeft().equals(CellComponents.EXIT))
+		{
+			// Move is through exit so DO NOT print "Move not possible"
+			return currentCell;
+		}
+		
 		System.out.println("Move not possible");
 		return currentCell; //return the same cell if we can't move
 		
@@ -118,7 +125,6 @@ public class Game {
 		// Move up a row / change row if movement is allowed
 		if(movement.equals(Movement.UP) && currentCell.getUp().equals(CellComponents.APERTURE))
 		{
-            System.out.println("Trying to move up");
 			if (index - 1 >= 0) { //same boundary checks as in moveCell... EXCEPT when we are moving up a row, we are decrementing the index!!!
 				return grid.getRows().get(index - 1);
 			}
@@ -127,7 +133,6 @@ public class Game {
 		// Move down a row / change row if movement is allowed
 		else if (movement.equals(Movement.DOWN) && currentCell.getUp().equals(CellComponents.APERTURE)) {
 			
-			System.out.println("Trying to move down");
 			if (index + 1 < grid.getRows().size()) { //if we move down we are increasing the index!!!
 				return grid.getRows().get(index + 1);
 			}
@@ -175,6 +180,8 @@ public class Game {
 			player.setCurrentCell(newCell);
 			
 			if (prevCell.getLeft().equals(CellComponents.EXIT)) { //if we reach the exit when we are moving left then return true.
+				System.out.println("Exiting . . .");
+				System.out.println("Congratulations you win!");
 				return true;
 			}
 			
@@ -245,6 +252,10 @@ public class Game {
 		// Instantiate random number
 		Random random = new Random();
 		
+		// Set seed so player can play same game . . .
+		long s = 42; 	  
+        random.setSeed(s);
+		
 		// Get random number
 		int randComponent = random.nextInt(100);
 		
@@ -276,43 +287,18 @@ public class Game {
 		
 		Random randExit = new Random();
 		Random randAperture = new Random();
+		
+		// Set the seed so player can play the same game . . .
+		long s = 42; 	  
+        randExit.setSeed(s);
+        randAperture.setSeed(s);
 		///////////////////////////////////
 		
 		// Create n x n cells
 		for(int i = 0; i < (gridSize*gridSize); i++)
 		{
-			// All cells but the left component will have random component enumeration (only WALL or APERTURE)
-			Cell newCell = new Cell(randomCellComponent(), randomCellComponent(), randomCellComponent(), CellComponents.WALL);
-			
-			// If all cell components are WALL then randomly change one to APERTURE
-			if(newCell.getRight() == CellComponents.WALL &&
-					newCell.getLeft() == CellComponents.WALL &&
-					newCell.getDown() == CellComponents.WALL &&
-					newCell.getUp() == CellComponents.WALL )
-			{
-				// Represents the component to change to APERTURE
-				int open = randAperture.nextInt(4);
-				
-				if(open == 0)
-				{
-					newCell.setRight(CellComponents.APERTURE);
-				}
-				
-				if(open == 1)
-				{
-					newCell.setLeft(CellComponents.APERTURE);
-				}
-				
-				if(open == 2)
-				{
-					newCell.setDown(CellComponents.APERTURE);
-				}
-				
-				if(open == 3)
-				{
-					newCell.setUp(CellComponents.APERTURE);
-				}
-			}
+			// All cells set to component WALL
+			Cell newCell = new Cell(CellComponents.WALL, CellComponents.WALL, CellComponents.WALL, CellComponents.WALL);
 			
 			// Add cells to the cell list
 			cells.add(newCell);
@@ -331,13 +317,6 @@ public class Game {
 			{
 				// Add cells to the rows
 				Cell addCell = cells.get((i * gridSize) + j);
-				
-				if(j == 0) {
-					// If the cell is the leftmost cell
-					// then set the left component to WALL
-					addCell.setLeft(CellComponents.WALL);
-				}
-				
 				rowCells.add(addCell);		
 			}
 			
@@ -348,6 +327,65 @@ public class Game {
 		
 		// Add the rows to the new grid
 		Grid randomGrid = new Grid(rows);
+		
+		// Randomly set inner LEFT/RIGHT walls to APERTURE
+		for(int i = 0; i <randomGrid.getRows().size(); i++) {
+			for(int j = 0; j < gridSize - 1; j++)
+			{
+				CellComponents shareLeftRight = randomCellComponent();
+				randomGrid.getRows().get(i).getCells().get(j).setRight(shareLeftRight);
+				randomGrid.getRows().get(i).getCells().get(j + 1).setLeft(shareLeftRight);
+			}
+		}
+		
+		// Randomly set inner UP/DOWN walls to APERTURE
+		for(int i = 0; i <randomGrid.getRows().size(); i++) {
+			for(int j = 0; j < gridSize - 1; j++) {
+				CellComponents shareUpDown = randomCellComponent();
+				randomGrid.getRows().get(j).getCells().get(i).setDown(shareUpDown);
+				randomGrid.getRows().get(j + 1).getCells().get(i).setUp(shareUpDown);
+			}
+		}
+		
+		// If the cell completely WALL then create random APERTURE
+		for(int i = 0; i <randomGrid.getRows().size(); i++) {
+			for(int j = 0; j < gridSize; j++) {
+
+				while(randomGrid.getRows().get(i).getCells().get(j).getRight().equals(CellComponents.WALL) &&
+					randomGrid.getRows().get(i).getCells().get(j).getLeft().equals(CellComponents.WALL) &&
+							randomGrid.getRows().get(i).getCells().get(j).getDown().equals(CellComponents.WALL) &&
+							randomGrid.getRows().get(i).getCells().get(j).getUp().equals(CellComponents.WALL))
+				{
+						
+					// Represents the component to change to APERTURE
+					int open = randAperture.nextInt(4);
+					
+					if(open == 0 && j != gridSize - 1)
+					{
+						randomGrid.getRows().get(i).getCells().get(j).setRight(CellComponents.APERTURE);
+						break;
+					}
+					
+					else if(open == 1 && j != 0)
+					{
+						randomGrid.getRows().get(i).getCells().get(j).setLeft(CellComponents.APERTURE);
+						break;
+					}
+					
+					else if(open == 2 && i != gridSize - 1)
+					{
+						randomGrid.getRows().get(i).getCells().get(j).setDown(CellComponents.APERTURE);
+						break;
+					}
+					
+					else if(open == 3 && i != 0)
+					{
+						randomGrid.getRows().get(i).getCells().get(j).setUp(CellComponents.APERTURE);
+						break;
+					}
+				}
+			}
+		}
 		
 		// If left and right cells don't share the same enumeration
 		// get a random enumeration and set them to the same enumeration
