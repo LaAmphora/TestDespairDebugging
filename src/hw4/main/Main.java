@@ -41,19 +41,19 @@ public class Main {
 				continue;
 			}
 			Cell currCell = player.getCurrentCell();
-			System.out.println("Current cell components:");
-			System.out.print("Up: " + currCell.getUp()+ " ");
-			System.out.print("Down: " + currCell.getDown()+ " ");
-			System.out.print("Left: " + currCell.getLeft()+ " ");
-			System.out.print("Right: " + currCell.getRight()+ " ");
+//			System.out.println("Current cell components:");
+//			System.out.print("Up: " + currCell.getUp()+ " ");
+//			System.out.print("Down: " + currCell.getDown()+ " ");
+//			System.out.print("Left: " + currCell.getLeft()+ " ");
+//			System.out.print("Right: " + currCell.getRight()+ " ");
 			
 			boolean moved = game.play(move, player);
 			Cell currentCell = player.getCurrentCell();
-			System.out.println("Current cell after the move:");
-			System.out.print("Up: " + currentCell.getUp() + " ");
-			System.out.print("Down: " + currentCell.getDown() + " ");
-			System.out.print("Left: " + currentCell.getLeft()  + " ");
-			System.out.print("Right: " + currentCell.getRight() + " ");
+//			System.out.println("Current cell after the move:");
+//			System.out.print("Up: " + currentCell.getUp() + " ");
+//			System.out.print("Down: " + currentCell.getDown() + " ");
+//			System.out.print("Left: " + currentCell.getLeft()  + " ");
+//			System.out.print("Right: " + currentCell.getRight() + " ");
 			
 			if (moved != true) {
 				System.out.println("You hit a wall or have an invalid move.");
